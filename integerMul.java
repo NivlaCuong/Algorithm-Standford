@@ -6,8 +6,6 @@ import java.util.*;
  * The class IntegerMul will implement 2 different ways  to multiply 2 nth-digit nunbers
  */
 public class integerMul {
-    //        3141592653589793238462643383279502884197169399375105820974944592
-//        2718281828459045235360287471352662497757247093699959574966967627
     private String firstNum, secondNum, result;
 
     public integerMul(String a, String b) {
@@ -17,6 +15,8 @@ public class integerMul {
     public integerMul() {
         this("","");
     }
+
+    public
 
     public String mul(String val1, String val2) {
         if (val1.length() == 1 && val2.length() == 1) {
@@ -36,7 +36,6 @@ public class integerMul {
             val2 = "0" + val2;
         }
 
-
         String a = val1.substring(0,val1.length()/2);
         String b = val1.substring(val1.length()/2, val1.length());
         String c = val2.substring(0,val2.length()/2);
@@ -45,14 +44,26 @@ public class integerMul {
         long step2 = Long.parseLong(mul(b,d));
         long step3 = Long.parseLong(mul(Long.toString(Long.parseLong(a) + Long.parseLong(b)), Long.toString(Long.parseLong(c) + Long.parseLong(d))));
         long step4 = step3 - step2 - step1;
-        long result = (long) Math.pow(10, val1.length()) * step1 + step2 + step4 * (long) Math.pow(10, val1.length()/2);
+        String string1 = Long.toString(step1);
+        String string4 = Long.toString(step4);
+        for (int i = 0; i < val1.length(); i++) {
+            string1 += "0";
+        }
+        for (int i = 0; i < val1.length()/2; i++) {
+            string4 += "0";
+        }
+        long newStep1 = Long.parseLong(string1);
+        long newStep4 = Long.parseLong(string4);
+        long result = newStep1 + step2 + newStep4;
         return Long.toString(result);
     }
 
     public static void main(String[] args) {
         integerMul obj = new integerMul();
-
-        System.out.println(obj.mul("3141592653589793","2718281828459045"));
+        String a = "123123123123123123123123123123123132312";
+        long a1 = Long.parseUnsignedLong(a);
+        System.out.println(a1);
+//        System.out.println(obj.mul("3141592653589793","2718281828459045"));
 
     }
 
