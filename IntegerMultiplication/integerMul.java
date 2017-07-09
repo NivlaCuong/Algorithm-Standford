@@ -1,33 +1,22 @@
 package IntegerMultiplication;
 /**
- * Created by CalvinNguyen on 7/7/17.
- */
-/**
  * The class IntegerMul will implement 2 different ways  to multiply 2 nth-digit nunbers
  */
 public class integerMul {
-    private String firstNum, secondNum;
-    String[][] num0, num;
+    // 2D String Array: Contain an array of many split characters of multiple Strings.
+    String[][] array;
 
-
-    integerMul(String a, String b) {
-        firstNum = a;
-        secondNum = b;
-    }
-    integerMul() {
-        this("","");
-    }
-
-    void initializeArray(String[][] input,int size, int size2, String... value) {
-        input = new String[size][size2];
-        for (int i = 0; i < size; i++) {
-            input[i] = value[i].split("");
-        }
-    }
-
+    /**
+     * This fucntion will convert Strings into String Array and will to basic addition
+     * @param index
+     * @param res: keep track of result after each recursive call
+     * @param numbers: 2D Array of Strings
+     * @return the addition of two or 3 numbers in String format.
+     */
     String addition(int index, String res, String[][] numbers) {
         int sum = 0;
         String result = res;
+
         if (index < 0) {
             return result;
         }
@@ -37,6 +26,9 @@ public class integerMul {
         }
         int temp1 = sum % 10;
         result = Integer.toString(temp1) + result;
+        if (sum < 10 && index == 0) {
+            return result;
+        }
         if (sum >= 10) {
             if (index == 0) {
                 result = Integer.toString(sum / 10) + result;
@@ -46,105 +38,91 @@ public class integerMul {
                 numbers[0][index - 1] = Integer.toString(temp2);
             }
         }
-        if (sum < 10 && index == 0) {
-            return result;
-        }
         return addition(index - 1, result, numbers);
-    }
-    void splitString(String val1, String val2) {
-
     }
 
     /**
      * This functions run the Karatsuba Algorithm
-     * @param val1 First value
-     * @param val2
-     * @return
+     * @param val1 First number
+     * @param val2 Second number
+     * @return the multiplication of 2 numbers
      */
     String mul(String val1, String val2) {
         String a,b,c,d;
         String step1, step2, step3, step4, step5;
+
+        //Base case
         if (val1.length() == 1 && val2.length() == 1) {
-            long res = Long.parseLong(val1) * Long.parseLong(val2);
-            return Long.toString(res);
+            return Long.toString(Long.parseLong(val1) * Long.parseLong(val2));
         }
-        while (val1.length() < val2.length()) {
+
+        //Make all numbers even
+        while (val1.length() < val2.length() || val1.length() % 2 != 0) {
             val1 = "0" + val1;
         }
-        while (val2.length() < val1.length()) {
+        while (val2.length() < val1.length() || val2.length() % 2 != 0) {
             val2 = "0" + val2;
         }
-        if (val1.length() % 2 != 0) {
-            val1 = "0" + val1;
-        }
-        if (val2.length() % 2 != 0) {
-            val2 = "0" + val2;
-        }
+
+        //Split numbers into quadrant
         a = val1.substring(0, val1.length()/2);
         b = val1.substring(val1.length()/2, val1.length());
         c = val2.substring(0, val2.length()/2);
         d = val2.substring(val2.length()/2, val2.length());
-//        splitString(val1,val2);
 
+        /** Begin Karatsuba Algorithm */
         step1 = mul(a,c);
         step2 = mul(b,d);
         step3 = mul(a,d);
         step4 = mul(b,c);
 
+        //Make all numbers even
         int max = Math.max(step3.length(), step4.length());
-        while (step3.length() < max) {
-            step3 = "0" + step3;
-        }
-        while (step4.length() < max) {
-            step4 = "0" + step4;
-        }
+        step3 = addZeroToFront(step3,max);
+        step4 = addZeroToFront(step4, max);
 
-        num0 = new String[2][max];
-        num0[0] = step3.split("");
-        num0[1] = step4.split("");
-//        initializeArray(num0, 2, max, step3, step4);
+        array = new String[2][max];
+        initializeArray(array, 2, step3, step4);
 
-        step5 = addition(step3.length() - 1, "", num0);
+        step5 = addition(step3.length() - 1, "", array);
 
-        for (int i = 0; i < val1.length(); i++) {
-            step1 += "0";
-        }
-        for (int i = 0; i < val1.length()/2; i++) {
-            step5 += "0";
-        }
+        step1 = addZeroToEnd(step1,val1.length());
+        step5 = addZeroToEnd(step5, val1.length()/2);
 
-        int max1 = Math.max(step1.length(), step5.length());
-        int max2 = Math.max(max1, step2.length());
-        while (step1.length() < max2) {
-            step1 = "0" + step1;
-        }
-        while (step2.length() < max2) {
-            step2 = "0" + step2;
-        }
-        while (step5.length() < max2) {
-            step5 = "0" + step5;
-        }
-        num = new String[3][max2];
-        num[0] = step1.split("");
-        num[1] = step2.split("");
-        num[2] = step5.split("");
-//        initializeArray(num,3,max2,step1,step2,step5);
+        int max2 = Math.max(Math.max(step1.length(), step5.length()), step2.length());
 
-        String res = addition(step1.length() - 1, "", num);
+        step1 = addZeroToFront(step1, max2);
+        step2 = addZeroToFront(step2, max2);
+        step5 = addZeroToFront(step5, max2);
+
+        array = new String[3][max2];
+        initializeArray(array, 3, step1, step2, step5);
+
+        String res = addition(step1.length() - 1, "", array);
         while(res.startsWith("0")) {
             res = res.substring(1);
         }
         return res;
     }
 
-    public static void main(String[] args) {
-        integerMul obj = new integerMul("31415926535897932384626433832", "27182818284590452353602874713");
-        System.out.println(obj.mul(obj.firstNum,obj.secondNum));
+    String addZeroToFront(String value, int size) {
+        while (value.length() < size) {
+            value = "0" + value;
+        }
+        return value;
 
     }
+    String addZeroToEnd(String value, int size) {
+        for (int i = 0; i < size; i++) {
+            value += "0";
+        }
+        return value;
+    }
 
-
-
-
+    void initializeArray(String[][] input, int size, String... value) {
+        for (int i = 0; i < size; i++) {
+            input[i] = value[i].split("");
+        }
+    }
 
 }
