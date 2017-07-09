@@ -20,7 +20,6 @@ public class integerMul {
         if (index < 0) {
             return result;
         }
-
         for (int i = 0; i < numbers.length; i++) {
             sum += Integer.parseInt(numbers[i][index]);
         }
@@ -31,8 +30,7 @@ public class integerMul {
         }
         if (sum >= 10) {
             if (index == 0) {
-                result = Integer.toString(sum / 10) + result;
-                return result;
+                return Integer.toString(sum / 10) + result;
             } else {
                 int temp2 = Integer.parseInt(numbers[0][index - 1]) + (sum / 10);
                 numbers[0][index - 1] = Integer.toString(temp2);
@@ -105,13 +103,24 @@ public class integerMul {
         return res;
     }
 
+    /**
+     * Add 0 to the Front of the String
+     * @param value: String need to add
+     * @param size: Number of 0 to add
+     * @return a String with modification
+     */
     String addZeroToFront(String value, int size) {
         while (value.length() < size) {
             value = "0" + value;
         }
         return value;
-
     }
+    /**
+     * Add 0 to the End of the String
+     * @param value: String need to add
+     * @param size: Number of 0 to add
+     * @return a String with modification
+     */
     String addZeroToEnd(String value, int size) {
         for (int i = 0; i < size; i++) {
             value += "0";
@@ -119,6 +128,12 @@ public class integerMul {
         return value;
     }
 
+    /**
+     * Splits the String into String Array
+     * @param input
+     * @param size
+     * @param value
+     */
     void initializeArray(String[][] input, int size, String... value) {
         for (int i = 0; i < size; i++) {
             input[i] = value[i].split("");
