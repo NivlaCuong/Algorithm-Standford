@@ -13,30 +13,7 @@ public class integerMul {
      * @param numbers: 2D Array of Strings
      * @return the addition of two or 3 numbers in String format.
      */
-    String addition(int index, String res, String[][] numbers) {
-        int sum = 0;
-        String result = res;
-
-        if (index < 0) {
-            return result;
-        }
-        for (int i = 0; i < numbers.length; i++) {
-            sum += Integer.parseInt(numbers[i][index]);
-        }
-        int temp1 = sum % 10;
-        result = Integer.toString(temp1) + result;
-        if (sum < 10 && index == 0) {
-            return result;
-        }
-        if (sum >= 10) {
-            if (index == 0) {
-                return Integer.toString(sum / 10) + result;
-            } else {
-                int temp2 = Integer.parseInt(numbers[0][index - 1]) + (sum / 10);
-                numbers[0][index - 1] = Integer.toString(temp2);
-            }
-        }
-        return addition(index - 1, result, numbers);
+    public static void main(String[] args) {
     }
 
     /**
@@ -114,6 +91,32 @@ public class integerMul {
             value = "0" + value;
         }
         return value;
+    }
+
+    String addition(int index, String res, String[][] numbers) {
+        int sum = 0;
+        String result = res;
+
+        if (index < 0) {
+            return result;
+        }
+        for (int i = 0; i < numbers.length; i++) {
+            sum += Integer.parseInt(numbers[i][index]);
+        }
+        int temp1 = sum % 10;
+        result = Integer.toString(temp1) + result;
+        if (sum < 10 && index == 0) {
+            return result;
+        }
+        if (sum >= 10) {
+            if (index == 0) {
+                return Integer.toString(sum / 10) + result;
+            } else {
+                int temp2 = Integer.parseInt(numbers[0][index - 1]) + (sum / 10);
+                numbers[0][index - 1] = Integer.toString(temp2);
+            }
+        }
+        return addition(index - 1, result, numbers);
     }
     /**
      * Add 0 to the End of the String
