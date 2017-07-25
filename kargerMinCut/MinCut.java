@@ -14,6 +14,8 @@ Write your numeric answer in the space provided. So e.g., if your answer is 5, j
  */
 
 public class MinCut {
+    int minCut = 0;
 
+    
 
 }
